@@ -30,5 +30,4 @@ public class RabbitPublisherConfig {
         return new Jackson2JsonMessageConverter();
     }
 
-
 }

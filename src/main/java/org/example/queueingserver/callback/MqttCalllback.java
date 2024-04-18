@@ -2,19 +2,18 @@ package org.example.queueingserver.callback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.example.queueingserver.domain.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class MqttCalllback implements MqttCallback {
-    private static final Logger log = LoggerFactory.getLogger(MqttCalllback.class);
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
     private final ApplicationContext context;
