@@ -1,2 +1,2 @@
-# queueing-server
-RabbitMq 서버 입니다
+# queueing-service
+RabbitMq 서비스 입니다
