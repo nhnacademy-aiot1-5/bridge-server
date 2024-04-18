@@ -18,7 +18,7 @@ public class MqttConfig {
             @Value("${mqtt.server.uri}") String uri,
             @Value("${mqtt.client.id}") String clientId,
             @Value("${mqtt.subscribe.topic}") String topic,
-            MqttCallback mqttCallback) throws MqttException {
+            MqttCallback mqttCallback){
 
         try {
             MqttClient mqttClient = new MqttClient(uri, clientId);
