@@ -1,6 +1,5 @@
 package org.example.queueingserver.listener;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -13,21 +12,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ShutdownEventListener implements ApplicationListener<ContextClosedEvent> {
-    private final MqttClient mqttClient;
 
     @Override
-    public void onApplicationEvent(@NonNull ContextClosedEvent event) {
-        closeMqttClient();
-
-    }
-
-    private void closeMqttClient() {
-        try {
-            mqttClient.disconnect();
-            mqttClient.close();
-            log.info("mqtt client disconnected");
-        } catch (MqttException e) {
-            //ignore
-        }
+    public void onApplicationEvent(ContextClosedEvent event) {
+            try {
+                MqttClient mqttClient = event.getApplicationContext().getBean(MqttClient.class);
+                mqttClient.disconnect();
+                mqttClient.close();
+            } catch (MqttException e) {
+                log.info("Mqtt client is alvie {}",e.getMessage());
+            }
+        log.info("mqtt client disconnected");
     }
 }
