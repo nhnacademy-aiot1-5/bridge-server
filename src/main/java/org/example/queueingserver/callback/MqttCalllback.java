@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +17,7 @@ public class MqttCalllback implements MqttCallback {
     private static final Logger log = LoggerFactory.getLogger(MqttCalllback.class);
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
-    private final MqttClient mqttClient;
+    private final ApplicationContext context;
 
     @Value("${rabbitmq.exchange}")
     private String rabbitMqExchange;
@@ -27,6 +28,7 @@ public class MqttCalllback implements MqttCallback {
     public void connectionLost(Throwable throwable) {
         log.error("Connection lost : {}", throwable.getMessage());
         try {
+            MqttClient mqttClient = context.getBean(MqttClient.class);
             mqttClient.reconnect();
             log.info("Reconnect successful");
         } catch (MqttException e) {
@@ -39,18 +41,11 @@ public class MqttCalllback implements MqttCallback {
         Data data = objectMapper.readValue(mqttMessage.getPayload(), Data.class);
         data.setTopic(s);
         rabbitTemplate.convertAndSend(rabbitMqExchange,rabbitMqRoutingKey,data);
+        log.info("Message arrived : {}", data);
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        log.debug("deliveryComplete : {}", iMqttDeliveryToken);
-        try {
-            mqttClient.disconnect();
-            mqttClient.connect();
-            log.info("MQTT Client disconnected");
-        } catch (MqttException e) {
-            log.error("MQTT Client disconnect failed : {}", e.getMessage());
-        }
-
+        log.debug("deliveryComplete : {}", iMqttDeliveryToken.getResponse());
     }
 }
