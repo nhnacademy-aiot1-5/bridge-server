@@ -12,7 +12,7 @@ public class RabbitmqConfig {
     @Value("${rabbitmq.host}")
     private String host;
     @Value("${rabbitmq.port}")
-    private int port;
+    private String port;
     @Value("${rabbitmq.username}")
     private String username;
     @Value("${rabbitmq.password}")
@@ -22,7 +22,7 @@ public class RabbitmqConfig {
     public ConnectionFactory connectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
-        factory.setPort(port);
+        factory.setPort(Integer.parseInt(port));
         factory.setUsername(username);
         factory.setPassword(password);
         return factory;
