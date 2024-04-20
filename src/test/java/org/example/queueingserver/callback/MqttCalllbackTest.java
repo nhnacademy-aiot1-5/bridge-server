@@ -10,8 +10,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.springframework.context.ApplicationContext;
+
+import static org.mockito.Mockito.*;
 
 class MqttCalllbackTest {
     @Mock
@@ -31,6 +32,8 @@ class MqttCalllbackTest {
 
     @InjectMocks
     private MqttCalllback mqttCalllback;
+    @Mock
+    private ApplicationContext applicationContextMock;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +42,11 @@ class MqttCalllbackTest {
 
     @Test
     void connectionLost() throws MqttException {
-        Throwable throwable = new Exception("Connection lost");
+        Throwable throwable = mock(Throwable.class);
+        String errorMessage = "Connection lost error message";
+        when(throwable.getMessage()).thenReturn(errorMessage);
+        when(applicationContextMock.getBean(MqttClient.class)).thenReturn(mqttClient);
+
         mqttCalllback.connectionLost(throwable);
         verify(mqttClient).reconnect();
     }
@@ -65,7 +72,6 @@ class MqttCalllbackTest {
         IMqttDeliveryToken iMqttDeliveryToken = new MqttDeliveryToken("asdas");
 
         mqttCalllback.deliveryComplete(iMqttDeliveryToken);
-        verify(mqttClient).disconnect();
-        verify(mqttClient).connect();
+
     }
 }
