@@ -18,9 +18,8 @@ public class MqttConfig {
             @Value("${mqtt.server.uri}") String uri,
             @Value("${mqtt.client.id}") String clientId,
             @Value("${mqtt.subscribe.topic}") String topic,
-            MqttCallback mqttCallback){
+            MqttCallback mqttCallback) throws MqttException {
 
-        try {
             MqttClient mqttClient = new MqttClient(uri, clientId);
             mqttClient.setCallback(mqttCallback);
             mqttClient.connect();
@@ -29,10 +28,5 @@ public class MqttConfig {
             log.info("MqttClient has subscribed to topic '{}'", topic);
 
             return mqttClient;
-        }
-        catch (MqttException e) {
-            log.error("MqttException caught while subscribing to topic '{}', {}", topic, e.getMessage());
-        }
-        return null;
     }
 }
