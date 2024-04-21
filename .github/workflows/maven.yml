@@ -26,6 +26,19 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+
+    - name: environment variables
+      run: |
+          echo "RABBITMQ_HOST=${{ secrets.RABBITMQ_HOST }}" >> $GITHUB_ENV
+          echo "RABBITMQ_PORT=${{ secrets.RABBITMQ_PORT }}" >> $GITHUB_ENV
+          echo "RABBITMQ_USERNAME=${{ secrets.RABBITMQ_USERNAME }}" >> $GITHUB_ENV
+          echo "RABBITMQ_PW=${{ secrets.RABBITMQ_PW }}" >> $GITHUB_ENV
+          echo "RABBITMQ_EXCHANGE=${{ secrets.RABBITMQ_EXCHANGE }}" >> $GITHUB_ENV
+          echo "RABBITMQ_ROUTINGKEY=${{ secrets.RABBITMQ_ROUTINGKEY }}" >> $GITHUB_ENV
+          echo "MQTT_URI=${{ secrets.MQTT_URI }}" >> $GITHUB_ENV
+          echo "MQTT_ID=${{ secrets.MQTT_ID }}" >> $GITHUB_ENV
+          echo "MQTT_TOPIC=${{ secrets.MQTT_TOPIC }}" >> $GITHUB_ENV
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
