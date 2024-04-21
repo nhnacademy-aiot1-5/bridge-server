@@ -27,8 +27,10 @@ public class MqttCalllback implements MqttCallback {
     public void connectionLost(Throwable throwable) {
         try {
             MqttClient mqttClient = context.getBean(MqttClient.class);
+            if (!mqttClient.isConnected()) {
             mqttClient.reconnect();
             log.info("Reconnect successful");
+            }
         } catch (MqttException e) {
             log.error("Connection lost : {}", e.getMessage());
         }
