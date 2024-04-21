@@ -18,14 +18,13 @@ public class MqttCalllback implements MqttCallback {
     private final ObjectMapper objectMapper;
     private final ApplicationContext context;
 
-    @Value("${rabbitmq.exchange}")
+    @Value("${spring.rabbitmq.template.exchange}")
     private String rabbitMqExchange;
-    @Value("${rabbitmq.routing-key}")
-    String rabbitMqRoutingKey;
+    @Value("${spring.rabbitmq.template.routing-key}")
+    private String rabbitMqRoutingKey;
 
     @Override
     public void connectionLost(Throwable throwable) {
-        log.error("Connection lost : {}", throwable.getMessage());
         try {
             MqttClient mqttClient = context.getBean(MqttClient.class);
             mqttClient.reconnect();
