@@ -35,7 +35,7 @@ public class MqttCalllback implements MqttCallback {
             log.error("Connection lost : {}", e.getMessage());
         }
     }
-
+ 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         Data data = objectMapper.readValue(mqttMessage.getPayload(), Data.class);
