@@ -35,13 +35,13 @@ public class MqttCalllback implements MqttCallback {
             log.error("Connection lost : {}", e.getMessage());
         }
     }
- 
+
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         Data data = objectMapper.readValue(mqttMessage.getPayload(), Data.class);
         data.setTopic(s);
         rabbitTemplate.convertAndSend(rabbitMqExchange,rabbitMqRoutingKey,data);
-        log.info("Message arrived : {}", data);
+        log.debug("Message arrived : {}", data);
     }
 
     @Override
