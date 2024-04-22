@@ -23,6 +23,7 @@ public class RabbitPublisherConfig {
         return rabbitTemplate;
     }
 
+
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
