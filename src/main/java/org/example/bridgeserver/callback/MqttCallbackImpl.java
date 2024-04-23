@@ -1,10 +1,10 @@
-package org.example.queueingserver.callback;
+package org.example.bridgeserver.callback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
-import org.example.queueingserver.domain.Data;
+import org.example.bridgeserver.domain.Data;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MqttCalllback implements MqttCallback {
+public class MqttCallbackImpl implements MqttCallback {
+
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
     private final ApplicationContext context;

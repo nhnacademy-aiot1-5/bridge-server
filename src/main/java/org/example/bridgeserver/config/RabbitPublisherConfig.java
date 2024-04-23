@@ -1,4 +1,4 @@
-package org.example.queueingserver.config;
+package org.example.bridgeserver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -20,18 +20,19 @@ public class RabbitPublisherConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         log.info("RabbitTemplate: {}", connectionFactory.getHost());
         rabbitTemplate.setMessageConverter(messageConverter);
+
         return rabbitTemplate;
     }
 
-
     @Bean
     public ObjectMapper objectMapper() {
+
         return new ObjectMapper();
     }
 
     @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter() {
+
         return new Jackson2JsonMessageConverter();
     }
-
 }

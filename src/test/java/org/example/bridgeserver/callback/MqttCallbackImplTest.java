@@ -1,8 +1,8 @@
-package org.example.queueingserver.callback;
+package org.example.bridgeserver.callback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
-import org.example.queueingserver.domain.Data;
+import org.example.bridgeserver.domain.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 import static org.mockito.Mockito.*;
 
-class MqttCalllbackTest {
+class MqttCallbackImplTest {
     @Mock
     private RabbitTemplate rabbitTemplate;
 
@@ -31,7 +31,7 @@ class MqttCalllbackTest {
     private String rabbitMqRoutingKey;
 
     @InjectMocks
-    private MqttCalllback mqttCalllback;
+    private MqttCallbackImpl mqttCallbackImpl;
     @Mock
     private ApplicationContext applicationContextMock;
 
@@ -47,7 +47,7 @@ class MqttCalllbackTest {
         when(throwable.getMessage()).thenReturn(errorMessage);
         when(applicationContextMock.getBean(MqttClient.class)).thenReturn(mqttClient);
 
-        mqttCalllback.connectionLost(throwable);
+        mqttCallbackImpl.connectionLost(throwable);
         verify(mqttClient).reconnect();
     }
 
@@ -61,7 +61,7 @@ class MqttCalllbackTest {
 
         when(objectMapper.readValue(payload, Data.class)).thenReturn(data);
 
-        mqttCalllback.messageArrived(topic, mqttMessage);
+        mqttCallbackImpl.messageArrived(topic, mqttMessage);
 
         verify(objectMapper).readValue(payload, Data.class);
         verify(rabbitTemplate).convertAndSend(rabbitMqExchange, rabbitMqRoutingKey, data);
@@ -71,7 +71,7 @@ class MqttCalllbackTest {
     void deliveryComplete() throws MqttException {
         IMqttDeliveryToken iMqttDeliveryToken = new MqttDeliveryToken("asdas");
 
-        mqttCalllback.deliveryComplete(iMqttDeliveryToken);
+        mqttCallbackImpl.deliveryComplete(iMqttDeliveryToken);
 
     }
 }
