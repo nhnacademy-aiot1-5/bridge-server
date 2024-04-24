@@ -1,4 +1,4 @@
-package org.example.queueingserver.domain;
+package org.example.bridgeserver.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 @Getter
 public class Data {
+
     @Setter
     private String topic;
     private Long time;

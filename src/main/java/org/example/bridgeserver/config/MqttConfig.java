@@ -1,4 +1,4 @@
-package org.example.queueingserver.config;
+package org.example.bridgeserver.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class MqttConfig {
+
     @Bean
     public MqttClient mqttClient(
             @Value("${mqtt.server.uri}") String uri,
