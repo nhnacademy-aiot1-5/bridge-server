@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+/**
+ * MQTT 관련 설정 클래스입니다.
+ */
 @Configuration
-@Component
 @Slf4j
 public class MqttConfig {
 
