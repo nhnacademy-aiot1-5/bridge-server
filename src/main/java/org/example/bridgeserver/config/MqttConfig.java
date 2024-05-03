@@ -6,9 +6,9 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * MQTT 관련 설정 클래스입니다.
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class MqttConfig {
 
     @Bean
+    @ConditionalOnProperty(name = "bridge.mode", havingValue = "mqtt")
     public MqttClient mqttClient(
             @Value("${mqtt.server.uri}") String uri,
             @Value("${mqtt.client.id}") String clientId,

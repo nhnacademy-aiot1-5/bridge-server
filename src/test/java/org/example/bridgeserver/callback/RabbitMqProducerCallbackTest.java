@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 import static org.mockito.Mockito.*;
 
-class MqttCallbackImplTest {
+class RabbitMqProducerCallbackTest {
     @Mock
     private RabbitTemplate rabbitTemplate;
 
@@ -31,7 +31,7 @@ class MqttCallbackImplTest {
     private String rabbitMqRoutingKey;
 
     @InjectMocks
-    private MqttCallbackImpl mqttCallbackImpl;
+    private RabbitMqProducerCallback rabbitMqProducerCallback;
     @Mock
     private ApplicationContext applicationContextMock;
 
@@ -47,7 +47,7 @@ class MqttCallbackImplTest {
         when(throwable.getMessage()).thenReturn(errorMessage);
         when(applicationContextMock.getBean(MqttClient.class)).thenReturn(mqttClient);
 
-        mqttCallbackImpl.connectionLost(throwable);
+        rabbitMqProducerCallback.connectionLost(throwable);
         verify(mqttClient).reconnect();
     }
 
@@ -61,7 +61,7 @@ class MqttCallbackImplTest {
 
         when(objectMapper.readValue(payload, Data.class)).thenReturn(data);
 
-        mqttCallbackImpl.messageArrived(topic, mqttMessage);
+        rabbitMqProducerCallback.messageArrived(topic, mqttMessage);
 
         verify(objectMapper).readValue(payload, Data.class);
         verify(rabbitTemplate).convertAndSend(rabbitMqExchange, rabbitMqRoutingKey, data);
@@ -71,7 +71,7 @@ class MqttCallbackImplTest {
     void deliveryComplete() throws MqttException {
         IMqttDeliveryToken iMqttDeliveryToken = new MqttDeliveryToken("asdas");
 
-        mqttCallbackImpl.deliveryComplete(iMqttDeliveryToken);
+        rabbitMqProducerCallback.deliveryComplete(iMqttDeliveryToken);
 
     }
 }

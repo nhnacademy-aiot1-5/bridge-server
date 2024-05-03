@@ -7,13 +7,15 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.example.bridgeserver.domain.Data;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MqttCallbackImpl implements MqttCallback {
+@ConditionalOnProperty(name = "bridge.mode", havingValue = "mqtt")
+public class RabbitMqProducerCallback implements MqttCallback {
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
