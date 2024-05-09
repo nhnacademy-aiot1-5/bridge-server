@@ -1,4 +1,4 @@
-package org.example.bridgeserver.config;
+package live.ioteatime.bridgeserver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;

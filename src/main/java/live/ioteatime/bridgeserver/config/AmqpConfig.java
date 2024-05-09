@@ -1,4 +1,4 @@
-package org.example.bridgeserver.config;
+package live.ioteatime.bridgeserver.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

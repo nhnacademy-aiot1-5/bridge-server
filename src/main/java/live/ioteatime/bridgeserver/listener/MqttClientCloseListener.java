@@ -1,4 +1,4 @@
-package org.example.bridgeserver.listener;
+package live.ioteatime.bridgeserver.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
