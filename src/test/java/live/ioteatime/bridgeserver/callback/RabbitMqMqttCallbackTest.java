@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationContext;
 
-class RabbitMqProducerCallbackTest {
+class RabbitMqMqttCallbackTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;
@@ -38,7 +38,7 @@ class RabbitMqProducerCallbackTest {
     @Mock
     private ApplicationContext applicationContextMock;
     @InjectMocks
-    private RabbitMqProducerCallback rabbitMqProducerCallback;
+    private RabbitMqMqttCallback rabbitMqMqttCallback;
 
     @BeforeEach
     void setUp() {
@@ -52,7 +52,7 @@ class RabbitMqProducerCallbackTest {
         when(throwable.getMessage()).thenReturn(errorMessage);
         when(applicationContextMock.getBean(MqttClient.class)).thenReturn(mqttClient);
 
-        rabbitMqProducerCallback.connectionLost(throwable);
+        rabbitMqMqttCallback.connectionLost(throwable);
 
         verify(mqttClient).reconnect();
     }
@@ -66,7 +66,7 @@ class RabbitMqProducerCallbackTest {
         data.setId(topic);
         when(objectMapper.readValue(payload, Data.class)).thenReturn(data);
 
-        rabbitMqProducerCallback.messageArrived(topic, mqttMessage);
+        rabbitMqMqttCallback.messageArrived(topic, mqttMessage);
 
         verify(objectMapper).readValue(payload, Data.class);
         verify(rabbitTemplate).convertAndSend(any(), any(), eq(data));
@@ -83,11 +83,11 @@ class RabbitMqProducerCallbackTest {
     void deliveryComplete() {
         ListAppender<ILoggingEvent> appender = new ListAppender<>();
         appender.start();
-        Logger logger = (Logger) LoggerFactory.getLogger(RabbitMqProducerCallback.class);
+        Logger logger = (Logger) LoggerFactory.getLogger(RabbitMqMqttCallback.class);
         logger.addAppender(appender);
         IMqttDeliveryToken iMqttDeliveryToken = new MqttDeliveryToken("asdas");
 
-        rabbitMqProducerCallback.deliveryComplete(iMqttDeliveryToken);
+        rabbitMqMqttCallback.deliveryComplete(iMqttDeliveryToken);
 
         String message = appender.list.get(0).getMessage();
         assertThat(message).startsWith("deliveryComplete");

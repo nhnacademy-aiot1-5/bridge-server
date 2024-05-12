@@ -1,6 +1,8 @@
 package live.ioteatime.bridgeserver.callback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import live.ioteatime.bridgeserver.domain.Data;
+import live.ioteatime.bridgeserver.domain.Protocol;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -8,8 +10,6 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import live.ioteatime.bridgeserver.domain.Data;
-import live.ioteatime.bridgeserver.domain.Protocol;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @ConditionalOnProperty(name = "bridge.server.protocol", havingValue = "mqtt")
-public class RabbitMqProducerCallback implements MqttCallback {
+public class RabbitMqMqttCallback implements MqttCallback {
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
