@@ -1,4 +1,4 @@
-package org.example.bridgeserver;
+package live.ioteatime.bridgeserver;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.junit.jupiter.api.Test;

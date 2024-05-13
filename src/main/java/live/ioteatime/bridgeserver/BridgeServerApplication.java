@@ -1,4 +1,4 @@
-package org.example.bridgeserver;
+package live.ioteatime.bridgeserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

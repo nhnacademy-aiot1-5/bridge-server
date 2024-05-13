@@ -1,19 +1,29 @@
-package org.example.bridgeserver.callback;
+package live.ioteatime.bridgeserver.callback;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import live.ioteatime.bridgeserver.domain.Data;
+import live.ioteatime.bridgeserver.domain.Protocol;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.paho.client.mqttv3.*;
-import org.example.bridgeserver.domain.Data;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * RabbitMQ에 데이터를 전송하는 MQTT 콜백 클래스입니다.
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MqttCallbackImpl implements MqttCallback {
+@ConditionalOnProperty(name = "bridge.server.protocol", havingValue = "mqtt")
+public class RabbitMqMqttCallback implements MqttCallback {
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
@@ -29,8 +39,8 @@ public class MqttCallbackImpl implements MqttCallback {
         try {
             MqttClient mqttClient = context.getBean(MqttClient.class);
             if (!mqttClient.isConnected()) {
-            mqttClient.reconnect();
-            log.info("Reconnect successful");
+                mqttClient.reconnect();
+                log.info("Reconnect successful");
             }
         } catch (MqttException e) {
             log.error("Connection lost : {}", e.getMessage());
@@ -40,8 +50,9 @@ public class MqttCallbackImpl implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         Data data = objectMapper.readValue(mqttMessage.getPayload(), Data.class);
-        data.setTopic(s);
-        rabbitTemplate.convertAndSend(rabbitMqExchange,rabbitMqRoutingKey,data);
+        data.setProtocol(Protocol.MQTT);
+        data.setId(s);
+        rabbitTemplate.convertAndSend(rabbitMqExchange, rabbitMqRoutingKey, data);
         log.debug("Message arrived : {}", data);
     }
 
