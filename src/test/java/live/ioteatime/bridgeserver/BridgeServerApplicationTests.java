@@ -1,5 +1,6 @@
 package live.ioteatime.bridgeserver;
 
+import live.ioteatime.bridgeserver.client.ModbusClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,9 @@ class BridgeServerApplicationTests {
 
     @MockBean
     MqttClient mqttClient;
+
+    @MockBean
+    ModbusClient modbusClient;
 
     @Test
     void contextLoads() {
